@@ -1,0 +1,6 @@
+export * from './create-comment.type'
+export * from './find-many-comments.type'
+export * from './update-comment.type'
+export * from './remove-comment.type'
+export * from './delete-comment.type'
+export * from './file.type'

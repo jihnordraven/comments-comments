@@ -19,7 +19,9 @@
 		"noFallthroughCasesInSwitch": false,
 		"paths": {
 			"@patterns": ["src/utils/patterns"],
-			"@validators": ["src/utils/validators"]
+			"@validators": ["src/utils/validators"],
+			"@constants": ["src/utils/constants"],
+			"@guards": ["src/guards-handlers/guards"]
 		}
 	}
 }
