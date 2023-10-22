@@ -21,7 +21,8 @@
 			"@patterns": ["src/utils/patterns"],
 			"@validators": ["src/utils/validators"],
 			"@constants": ["src/utils/constants"],
-			"@guards": ["src/guards-handlers/guards"]
+			"@guards": ["src/guards-handlers/guards"],
+			"@config": ["src/config"]
 		}
 	}
 }

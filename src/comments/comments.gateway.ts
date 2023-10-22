@@ -11,21 +11,15 @@ import {
 import { Server, Socket } from 'socket.io'
 import { Logger, UseGuards } from '@nestjs/common'
 import { bgCyan, bgGreen, bgYellow } from 'colorette'
-import {
-	CreateCommentDto,
-	DeleteCommentDto,
-	FindManyCommentsDto,
-	UpdateCommentDto
-} from './core/dtos'
+import { DeleteCommentDto, FindManyCommentsDto, UpdateCommentDto } from './core/dtos'
 import { JwtWsGuard } from '@guards'
 import { Comment } from '@prisma/client'
 import { CommentsRepo, CommentsQueryRepo } from './repositories'
 import { CommentsService } from './comments.service'
 import { CommandBus } from '@nestjs/cqrs'
-import { CC } from './commands'
 
 @UseGuards(JwtWsGuard)
-@WebSocketGateway(9200, { cors: true, namespace: 'comments' })
+@WebSocketGateway({ cors: true, namespace: 'comments' })
 export class CommentsGateway
 	implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
@@ -54,27 +48,27 @@ export class CommentsGateway
 		this.logger.log(bgYellow(`client: ${client.id} has disconnected`))
 	}
 
-	@SubscribeMessage('createComment')
-	public async createComment(
-		@ConnectedSocket() client: Socket & { userId: string },
-		@MessageBody() body: CreateCommentDto
-	): Promise<void> {
-		console.log(body)
-		const userId: string = client.userId
+	// @SubscribeMessage('createComment')
+	// public async createComment(
+	// 	@ConnectedSocket() client: Socket & { userId: string },
+	// 	@MessageBody() body: CreateCommentDto
+	// ): Promise<void> {
+	// 	console.log(body)
+	// 	const userId: string = client.userId
 
-		if (body.file) {
-			await this.commentsService.validateFile(body.file)
-		}
-		const comment: Comment = await this.commandBus.execute(
-			new CC.CreateCommentCommand({
-				userId,
-				content: body.content,
-				file: body.file
-			})
-		)
+	// 	if (body.file) {
+	// 		await this.commentsService.validateFile(body.file)
+	// 	}
+	// 	const comment: Comment = await this.commandBus.execute(
+	// 		new CC.CreateCommentCommand({
+	// 			userId,
+	// 			content: body.content,
+	// 			file: body.file
+	// 		})
+	// 	)
 
-		this.server.emit('commentCreated', comment)
-	}
+	// 	this.server.emit('commentCreated', comment)
+	// }
 
 	@SubscribeMessage('findManyComments')
 	public async findManyComments(
@@ -82,7 +76,7 @@ export class CommentsGateway
 	): Promise<void> {
 		const comments: Comment[] = await this.commentsQueryRepo.findMany(body)
 
-		this.server.emit('foundManyComments', comments)
+		this.server.emit('found-many-comments', comments)
 	}
 
 	@SubscribeMessage('updateComment')
@@ -93,7 +87,7 @@ export class CommentsGateway
 		const userId: string = client.userId
 
 		const comment: Comment = await this.commentsRepo.update(body, userId)
-		this.server.emit('updatedComment', comment)
+		this.server.emit('updated-comment', comment)
 	}
 
 	@SubscribeMessage('deleteComment')
@@ -104,6 +98,6 @@ export class CommentsGateway
 		const userId: string = client.userId
 
 		const comment: Comment = await this.commentsRepo.delete(body, userId)
-		this.server.emit('deletedComment', comment)
+		this.server.emit('deleted-comment', comment)
 	}
 }

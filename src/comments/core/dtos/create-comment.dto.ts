@@ -1,6 +1,5 @@
 import { CommentContentPattern } from '@patterns'
-import { IsNotEmpty, IsOptional, IsString, Length, Matches } from 'class-validator'
-import { FileType } from '../types'
+import { IsNotEmpty, IsString, Length, Matches } from 'class-validator'
 
 export class CreateCommentDto {
 	@IsNotEmpty()
@@ -8,7 +7,4 @@ export class CreateCommentDto {
 	@Matches(CommentContentPattern())
 	@Length(1, 200)
 	readonly content: string
-
-	@IsOptional()
-	readonly file: FileType
 }

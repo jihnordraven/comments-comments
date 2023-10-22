@@ -1,4 +1,5 @@
 import {
+	BadRequestException,
 	ForbiddenException,
 	Inject,
 	Injectable,
@@ -9,7 +10,7 @@ import {
 import { PrismaService } from 'prisma/prisma.service'
 import { CreateComment, DeleteComment, UpdateComment } from '../core/types'
 import { Comment } from '@prisma/client'
-import { bgCyan } from 'colorette'
+import { bgCyan, red } from 'colorette'
 import { v4 } from 'uuid'
 import path from 'path'
 import { ConfigService } from '@nestjs/config'
@@ -27,11 +28,10 @@ export class CommentsRepo {
 	) {}
 
 	public async create(data: CreateComment): Promise<Comment> {
-		const comment: Comment | void = await this.prisma.comment
+		const comment = await this.prisma.comment
 			.create({ data })
-			.catch((err: string) => this.logger.log(bgCyan(err)))
-
-		if (!comment) throw new InternalServerErrorException('Unable to create a comment')
+			.catch((err: string) => this.logger.error(red(err)))
+		if (!comment) throw new InternalServerErrorException()
 
 		return comment
 	}

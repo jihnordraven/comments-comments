@@ -11,6 +11,7 @@ const bootstrap = async (): Promise<void> => {
 	const app: NestExpressApplication =
 		await NestFactory.create<NestExpressApplication>(AppModule)
 
+	app.setGlobalPrefix('api/v1')
 	app.enableCors()
 	app.useGlobalPipes(new ValidationPipe())
 

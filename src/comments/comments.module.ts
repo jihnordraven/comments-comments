@@ -7,6 +7,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { FILES_SERVICE } from '@constants'
 import { CH } from './commands'
 import { CqrsModule } from '@nestjs/cqrs'
+import { CommentsController } from './comments.controller'
 
 @Module({
 	imports: [
@@ -26,6 +27,7 @@ import { CqrsModule } from '@nestjs/cqrs'
 			}
 		])
 	],
+	controllers: [CommentsController],
 	providers: [CommentsGateway, CommentsService, ...COMMENTS_REPOS, ...CH]
 })
 export class CommentsModule {}
