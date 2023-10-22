@@ -71,6 +71,10 @@ export class CommentsGateway
 	// 	this.server.emit('commentCreated', comment)
 	// }
 
+	public commentCreated(comment: Comment): void {
+		this.server.emit('comment-created', comment)
+	}
+
 	@SubscribeMessage('findManyComments')
 	public async findManyComments(
 		@MessageBody() body: FindManyCommentsDto

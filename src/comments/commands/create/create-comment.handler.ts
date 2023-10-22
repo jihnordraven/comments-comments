@@ -19,7 +19,7 @@ export class CreateCommentHandler implements ICommandHandler<CreateCommentComman
 	) {}
 
 	public async execute({ input }: CreateCommentCommand): Promise<Comment> {
-		const { userId, content, file } = input
+		const { userId, content, parentId, file } = input
 
 		let fileUrl: string = ''
 
@@ -38,6 +38,7 @@ export class CreateCommentHandler implements ICommandHandler<CreateCommentComman
 
 		return this.commentsRepo.create({
 			content,
+			parentId,
 			fileUrl,
 			userId
 		})
