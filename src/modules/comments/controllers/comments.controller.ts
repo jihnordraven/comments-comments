@@ -11,14 +11,17 @@ import {
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { CreateCommentDto } from '../core/dtos'
-import { JwtAccessPayloadDecorator } from '../../utils/decorators/jwt-access-payload.decorator'
+import { JwtAccessPayloadDecorator } from '../../../utils/decorators/jwt-access-payload.decorator'
 import { CommentsService } from '../services/comments.service'
 import { CommandBus } from '@nestjs/cqrs'
 import { Comment } from '@prisma/client'
 import { CC } from '../commands'
 import { CommentsGateway } from '../gateways/comments.gateway'
-import { JwtGuard } from '../../guards-handlers/guards'
+import { JwtGuard } from '../../../guards-handlers/guards'
+import { COMMENTS_SWAGGER } from '../../../utils/swagger'
+import { ApiTags } from '@nestjs/swagger'
 
+// @ApiTags('Comments Controller')
 @UseGuards(JwtGuard)
 @Controller('comments')
 export class CommentsController {
@@ -28,12 +31,13 @@ export class CommentsController {
 		private readonly commentsGateway: CommentsGateway
 	) {}
 
+	@COMMENTS_SWAGGER.SwaggerToCreateComment()
 	@Post('create')
 	@HttpCode(HttpStatus.OK)
 	@UseInterceptors(FileInterceptor('file'))
 	public async create(
 		@Body() dto: CreateCommentDto,
-		@UploadedFile() file: any, // Express.Multer.File | new ParseFileType({validators: [...]})
+		@UploadedFile() file: Express.Multer.File, // new ParseFileType({validators: [...]})
 		@JwtAccessPayloadDecorator('userId', ParseUUIDPipe)
 		userId: string
 	): Promise<any> {

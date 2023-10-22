@@ -7,7 +7,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { CH } from './commands'
 import { CqrsModule } from '@nestjs/cqrs'
 import { CommentsController } from './controllers/comments.controller'
-import { FILES_SERVICE } from '../utils/constants'
+import { FILES_SERVICE } from '../../utils/constants'
 
 @Module({
 	imports: [

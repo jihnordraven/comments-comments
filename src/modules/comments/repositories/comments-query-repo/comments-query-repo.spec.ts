@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { CommentsQueryRepo } from './comments-query.repo'
-import { PrismaService } from '../../../../prisma/prisma.service'
+import { PrismaService } from '../../../../../prisma/prisma.service'
 
 describe('CreateCommentHandler', (): void => {
 	let commentsQueryRepo: CommentsQueryRepo

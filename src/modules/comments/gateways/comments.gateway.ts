@@ -15,7 +15,7 @@ import { DeleteCommentDto, FindManyCommentsDto, UpdateCommentDto } from '../core
 import { Comment } from '@prisma/client'
 import { CommentsRepo, CommentsQueryRepo } from '../repositories'
 import { CommentsService } from '../services/comments.service'
-import { JwtWsGuard } from '../../guards-handlers/guards'
+import { JwtWsGuard } from '../../../guards-handlers/guards'
 
 @UseGuards(JwtWsGuard)
 @WebSocketGateway({ cors: true, namespace: 'comments' })

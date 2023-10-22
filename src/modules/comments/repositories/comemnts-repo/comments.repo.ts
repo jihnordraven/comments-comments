@@ -5,10 +5,10 @@ import {
 	Logger,
 	NotFoundException
 } from '@nestjs/common'
-import { PrismaService } from '../../../../prisma/prisma.service'
+import { PrismaService } from '../../../../../prisma/prisma.service'
 import { Comment } from '@prisma/client'
 import { red } from 'colorette'
-import { CreateComment, DeleteComment, UpdateComment } from '../../../comments/core/types'
+import { CreateComment, DeleteComment, UpdateComment } from '../../core/types'
 
 @Injectable()
 export class CommentsRepo {

@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString, IsUUID, Length, Matches } from 'class-validator'
-import { CommentContentPattern } from '../../../utils/patterns'
+import { CommentContentPattern } from '../../../../utils/patterns'
 
 export class UpdateCommentDto {
 	@IsNotEmpty()

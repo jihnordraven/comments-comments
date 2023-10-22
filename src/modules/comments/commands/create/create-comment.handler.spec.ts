@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { CreateCommentHandler } from './create-comment.handler'
-import { FILES_SERVICE } from '../../../utils/constants'
-import { CommentsRepo } from '../../../comments/repositories'
+import { FILES_SERVICE } from '../../../../utils/constants'
+import { CommentsRepo } from '../../repositories'
 
 describe('CreateCommentHandler', (): void => {
 	let createCommentHandler: CreateCommentHandler
