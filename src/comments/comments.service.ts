@@ -22,7 +22,7 @@ export class CommentsService {
 	public async validateFile(
 		file: any /* Express.Multer.File*/
 	): Promise<any /* Express.Multer.File */> {
-		const allowedExtensions: string[] = ['png', 'jpg', 'jpeg']
+		const allowedExtensions: string[] = ['.png', '.jpg', '.jpeg']
 
 		const fileExtname: string = extname(file.originalname).toLowerCase()
 

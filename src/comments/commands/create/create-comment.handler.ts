@@ -8,6 +8,7 @@ import { ClientProxy } from '@nestjs/microservices'
 import { v4 } from 'uuid'
 import path, { extname } from 'path'
 import { Comment } from '@prisma/client'
+import { firstValueFrom } from 'rxjs'
 
 @CommandHandler(CreateCommentCommand)
 export class CreateCommentHandler implements ICommandHandler<CreateCommentCommand> {
@@ -23,19 +24,16 @@ export class CreateCommentHandler implements ICommandHandler<CreateCommentComman
 		let fileUrl: string = ''
 
 		if (file) {
-			const s3ObjectUrl: string = this.config.getOrThrow<string>('S3_OBJECT_URL')
-			const filename: string = v4() + `.${extname(file.originalname)}`
+			const data = this.filesClient.send('uploadFile', {
+				buffer: file.buffer,
+				originalname: file.originalname
+			})
 
-			const isSuccess: boolean = Boolean(
-				this.filesClient.emit('uploadFile', {
-					buffer: file.buffer,
-					filename
-				})
-			)
-			if (!isSuccess)
-				throw new InternalServerErrorException('Unable to upload a file')
+			const result: { ok: boolean; fileUrl?: string; err?: string } =
+				await firstValueFrom(data)
 
-			fileUrl = `${s3ObjectUrl}/${filename}`
+			if (!result.ok) throw new InternalServerErrorException(result.err)
+			else fileUrl = result.fileUrl
 		}
 
 		return this.commentsRepo.create({

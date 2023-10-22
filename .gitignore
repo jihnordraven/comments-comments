@@ -1,3 +1,21 @@
+# # node
+# PORT=4400
+# HOST=http://localhost:4400
+# MODE=dev
+
+# # database
+# DATABASE_URL=postgresql://user:user@localhost:5432/comments?schema=public
+
+# # jwt
+# JWT_ACCESS_SECRET=access-secret-123
+
+# # aws
+# S3_BUCKET_OBJECT_URL=your-object-url # Type your s3 bucket object url
+
+# # rabbitmq
+# RMQ_HOST=amqp://guest:guest@localhost:5672
+# RMQ_QUEUE=files
+
 # compiled output
 /dist
 /node_modules

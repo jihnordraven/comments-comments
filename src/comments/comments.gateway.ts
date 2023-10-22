@@ -59,6 +59,7 @@ export class CommentsGateway
 	// 	if (body.file) {
 	// 		await this.commentsService.validateFile(body.file)
 	// 	}
+
 	// 	const comment: Comment = await this.commandBus.execute(
 	// 		new CC.CreateCommentCommand({
 	// 			userId,
