@@ -1,6 +1,6 @@
-import { JwtAccessPayload } from '@guards'
 import { ExecutionContext, createParamDecorator } from '@nestjs/common'
 import { Request } from 'express'
+import { JwtAccessPayload } from '../../guards-handlers/guards'
 
 export const JwtAccessPayloadDecorator = createParamDecorator(
 	(key: keyof JwtAccessPayload, ctx: ExecutionContext): any => {

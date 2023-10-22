@@ -11,12 +11,11 @@ import {
 import { Server, Socket } from 'socket.io'
 import { Logger, UseGuards } from '@nestjs/common'
 import { bgCyan, bgGreen, bgYellow } from 'colorette'
-import { DeleteCommentDto, FindManyCommentsDto, UpdateCommentDto } from './core/dtos'
-import { JwtWsGuard } from '@guards'
+import { DeleteCommentDto, FindManyCommentsDto, UpdateCommentDto } from '../core/dtos'
 import { Comment } from '@prisma/client'
-import { CommentsRepo, CommentsQueryRepo } from './repositories'
-import { CommentsService } from './comments.service'
-import { CommandBus } from '@nestjs/cqrs'
+import { CommentsRepo, CommentsQueryRepo } from '../repositories'
+import { CommentsService } from '../services/comments.service'
+import { JwtWsGuard } from '../../guards-handlers/guards'
 
 @UseGuards(JwtWsGuard)
 @WebSocketGateway({ cors: true, namespace: 'comments' })
@@ -28,8 +27,7 @@ export class CommentsGateway
 	constructor(
 		private readonly commentsService: CommentsService,
 		private readonly commentsRepo: CommentsRepo,
-		private readonly commentsQueryRepo: CommentsQueryRepo,
-		private readonly commandBus: CommandBus
+		private readonly commentsQueryRepo: CommentsQueryRepo
 	) {}
 
 	@WebSocketServer() server: Server

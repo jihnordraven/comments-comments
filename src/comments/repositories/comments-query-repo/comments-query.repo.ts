@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
-import { PrismaService } from 'prisma/prisma.service'
-import { FindManyComments } from '../core/types'
+import { PrismaService } from '../../../../prisma/prisma.service'
+import { FindManyComments } from '../../core/types'
 import { Comment } from '@prisma/client'
 
 @Injectable()

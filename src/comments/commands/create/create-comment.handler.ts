@@ -1,20 +1,16 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
 import { CreateCommentCommand } from './create-comment.command'
 import { CommentsRepo } from '../../../comments/repositories'
-import { ConfigService } from '@nestjs/config'
-import { BadRequestException, Inject, InternalServerErrorException } from '@nestjs/common'
-import { FILES_SERVICE } from '@constants'
+import { Inject, InternalServerErrorException } from '@nestjs/common'
 import { ClientProxy } from '@nestjs/microservices'
-import { v4 } from 'uuid'
-import path, { extname } from 'path'
 import { Comment } from '@prisma/client'
 import { firstValueFrom } from 'rxjs'
+import { FILES_SERVICE } from '../../../utils/constants'
 
 @CommandHandler(CreateCommentCommand)
 export class CreateCommentHandler implements ICommandHandler<CreateCommentCommand> {
 	constructor(
 		@Inject(FILES_SERVICE) private readonly filesClient: ClientProxy,
-		private readonly config: ConfigService,
 		private readonly commentsRepo: CommentsRepo
 	) {}
 

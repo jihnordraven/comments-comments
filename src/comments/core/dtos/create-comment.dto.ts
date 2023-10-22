@@ -1,4 +1,4 @@
-import { CommentContentPattern } from '@patterns'
+import { CommentContentPattern } from '../../../utils/patterns'
 import {
 	IsNotEmpty,
 	IsOptional,

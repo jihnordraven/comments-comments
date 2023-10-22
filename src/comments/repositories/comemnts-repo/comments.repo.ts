@@ -1,31 +1,20 @@
 import {
-	BadRequestException,
 	ForbiddenException,
-	Inject,
 	Injectable,
 	InternalServerErrorException,
 	Logger,
 	NotFoundException
 } from '@nestjs/common'
-import { PrismaService } from 'prisma/prisma.service'
-import { CreateComment, DeleteComment, UpdateComment } from '../core/types'
+import { PrismaService } from '../../../../prisma/prisma.service'
 import { Comment } from '@prisma/client'
-import { bgCyan, red } from 'colorette'
-import { v4 } from 'uuid'
-import path from 'path'
-import { ConfigService } from '@nestjs/config'
-import { FILES_SERVICE } from '@constants'
-import { ClientProxy } from '@nestjs/microservices'
+import { red } from 'colorette'
+import { CreateComment, DeleteComment, UpdateComment } from '../../../comments/core/types'
 
 @Injectable()
 export class CommentsRepo {
 	private readonly logger: Logger = new Logger(CommentsRepo.name)
 
-	constructor(
-		@Inject(FILES_SERVICE) private readonly filesClient: ClientProxy,
-		private readonly config: ConfigService,
-		private readonly prisma: PrismaService
-	) {}
+	constructor(private readonly prisma: PrismaService) {}
 
 	public async create(data: CreateComment): Promise<Comment> {
 		const comment = await this.prisma.comment

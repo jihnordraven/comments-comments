@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common'
-import { CommentsService } from './comments.service'
-import { CommentsGateway } from './comments.gateway'
+import { CommentsService } from './services/comments.service'
+import { CommentsGateway } from './gateways/comments.gateway'
 import { COMMENTS_REPOS } from './repositories'
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import { ConfigModule, ConfigService } from '@nestjs/config'
-import { FILES_SERVICE } from '@constants'
 import { CH } from './commands'
 import { CqrsModule } from '@nestjs/cqrs'
-import { CommentsController } from './comments.controller'
+import { CommentsController } from './controllers/comments.controller'
+import { FILES_SERVICE } from '../utils/constants'
 
 @Module({
 	imports: [

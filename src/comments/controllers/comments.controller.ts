@@ -10,14 +10,14 @@ import {
 	UseInterceptors
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
-import { CreateCommentDto } from './core/dtos'
-import { JwtGuard } from '@guards'
-import { JwtAccessPayloadDecorator } from 'src/utils/decorators/jwt-access-payload.decorator'
-import { CommentsService } from './comments.service'
+import { CreateCommentDto } from '../core/dtos'
+import { JwtAccessPayloadDecorator } from '../../utils/decorators/jwt-access-payload.decorator'
+import { CommentsService } from '../services/comments.service'
 import { CommandBus } from '@nestjs/cqrs'
 import { Comment } from '@prisma/client'
-import { CC } from './commands'
-import { CommentsGateway } from './comments.gateway'
+import { CC } from '../commands'
+import { CommentsGateway } from '../gateways/comments.gateway'
+import { JwtGuard } from '../../guards-handlers/guards'
 
 @UseGuards(JwtGuard)
 @Controller('comments')

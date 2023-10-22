@@ -22,11 +22,9 @@ export class JwtWsGuard implements CanActivate {
 		const client: Socket & { userId: string } = ctx.switchToWs().getClient()
 
 		const token: string = client.handshake?.headers?.authorization
-
 		if (!token) client.disconnect()
 
 		const secret: string = this.config.getOrThrow<string>('JWT_ACCESS_SECRET')
-
 		try {
 			const decoded: JwtAccessPayload = verify(
 				token,
