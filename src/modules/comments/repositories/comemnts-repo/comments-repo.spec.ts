@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { CommentsRepo } from './comments.repo'
 import { PrismaService } from '../../../../../prisma/prisma.service'
+import { CACHE_MANAGER } from '@nestjs/cache-manager'
 
 describe('CreateCommentHandler', (): void => {
 	let commentsRepo: CommentsRepo
@@ -12,6 +13,14 @@ describe('CreateCommentHandler', (): void => {
 				{
 					provide: PrismaService,
 					useValue: {}
+				},
+				{
+					provide: CACHE_MANAGER,
+					useValue: {
+						get: jest.fn(),
+						set: jest.fn(),
+						del: jest.fn()
+					}
 				}
 			]
 		}).compile()

@@ -1,5 +1,4 @@
 import {
-	ConnectedSocket,
 	MessageBody,
 	OnGatewayConnection,
 	OnGatewayDisconnect,
@@ -10,10 +9,10 @@ import {
 } from '@nestjs/websockets'
 import { Server, Socket } from 'socket.io'
 import { Logger, UseGuards } from '@nestjs/common'
-import { bgCyan, bgGreen, bgYellow } from 'colorette'
-import { DeleteCommentDto, FindManyCommentsDto, UpdateCommentDto } from '../core/dtos'
+import { bgCyan, bgGreen, bgMagenta, bgYellow } from 'colorette'
+import { FindManyCommentsDto } from '../core/dtos'
 import { Comment } from '@prisma/client'
-import { CommentsRepo, CommentsQueryRepo } from '../repositories'
+import { CommentsQueryRepo } from '../repositories'
 import { CommentsService } from '../services/comments.service'
 import { JwtWsGuard } from '../../../guards-handlers/guards'
 
@@ -26,14 +25,13 @@ export class CommentsGateway
 
 	constructor(
 		private readonly commentsService: CommentsService,
-		private readonly commentsRepo: CommentsRepo,
 		private readonly commentsQueryRepo: CommentsQueryRepo
 	) {}
 
 	@WebSocketServer() server: Server
 
-	public async afterInit(server: Server): Promise<void> {
-		this.logger.log(bgCyan(`Server initializated. Server: ${server}`))
+	public async afterInit(): Promise<void> {
+		this.logger.log(bgMagenta(`WebSocket comments server initializated`))
 	}
 
 	public async handleConnection(client: Socket): Promise<void> {
