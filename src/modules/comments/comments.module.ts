@@ -18,6 +18,7 @@ import { redisStore } from 'cache-manager-redis-yet'
 			imports: [ConfigModule],
 			useFactory: async (config: ConfigService) => ({
 				store: await redisStore({
+					database: config.getOrThrow<number>('REDIS_DB'),
 					password: config.getOrThrow<string>('REDIS_PASS'),
 					socket: {
 						host: config.getOrThrow<string>('REDIS_HOST'),
