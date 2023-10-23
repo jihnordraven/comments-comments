@@ -8,10 +8,25 @@ import { CH } from './commands'
 import { CqrsModule } from '@nestjs/cqrs'
 import { CommentsController } from './controllers/comments.controller'
 import { FILES_SERVICE } from '../../utils/constants'
+import { CacheModule } from '@nestjs/cache-manager'
+import { redisStore } from 'cache-manager-redis-yet'
 
 @Module({
 	imports: [
 		CqrsModule,
+		CacheModule.registerAsync({
+			imports: [ConfigModule],
+			useFactory: async (config: ConfigService) => ({
+				store: await redisStore({
+					password: config.getOrThrow<string>('REDIS_PASS'),
+					socket: {
+						host: config.getOrThrow<string>('REDIS_HOST'),
+						port: config.getOrThrow<number>('REDIS_PORT')
+					}
+				})
+			}),
+			inject: [ConfigService]
+		}),
 		ClientsModule.registerAsync([
 			{
 				name: FILES_SERVICE,
