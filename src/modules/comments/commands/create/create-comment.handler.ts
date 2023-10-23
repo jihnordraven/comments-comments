@@ -1,7 +1,12 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
 import { CreateCommentCommand } from './create-comment.command'
 import { CommentsRepo } from '../../repositories'
-import { Inject, InternalServerErrorException } from '@nestjs/common'
+import {
+	HttpStatus,
+	Inject,
+	InternalServerErrorException,
+	NotFoundException
+} from '@nestjs/common'
 import { ClientProxy } from '@nestjs/microservices'
 import { Comment } from '@prisma/client'
 import { firstValueFrom } from 'rxjs'
@@ -18,6 +23,18 @@ export class CreateCommentHandler implements ICommandHandler<CreateCommentComman
 		const { userId, content, parentId, file } = input
 
 		let fileUrl: string = ''
+
+		if (parentId) {
+			const parentComment: Comment | null =
+				await this.commentsRepo.findById(parentId)
+			if (!parentComment)
+				throw new NotFoundException({
+					message: 'Parent comment not found',
+					error: 'Not found',
+					status: HttpStatus.NOT_FOUND,
+					context: 'parent-comment-not-found'
+				})
+		}
 
 		if (file) {
 			const data = this.filesClient.send('uploadFile', {

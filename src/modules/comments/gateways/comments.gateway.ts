@@ -46,6 +46,27 @@ export class CommentsGateway
 		this.logger.log(bgYellow(`client: ${client.id} has disconnected`))
 	}
 
+	public commentCreated(comment: Comment): void {
+		this.server.emit('comment-created', comment)
+	}
+
+	@SubscribeMessage('findManyComments')
+	public async findManyComments(
+		@MessageBody() body: FindManyCommentsDto
+	): Promise<void> {
+		const comments: Comment[] = await this.commentsQueryRepo.findMany(body)
+
+		this.server.emit('found-many-comments', comments)
+	}
+
+	public commentUpdated(comment: Comment): void {
+		this.server.emit('comment-updated', comment)
+	}
+
+	public commentDeleted(comment: Comment): void {
+		this.server.emit('comment-deleted', comment)
+	}
+
 	// @SubscribeMessage('createComment')
 	// public async createComment(
 	// 	@ConnectedSocket() client: Socket & { userId: string },
@@ -69,38 +90,25 @@ export class CommentsGateway
 	// 	this.server.emit('commentCreated', comment)
 	// }
 
-	public commentCreated(comment: Comment): void {
-		this.server.emit('comment-created', comment)
-	}
+	// @SubscribeMessage('updateComment')
+	// public async update(
+	// 	@MessageBody() body: UpdateCommentDto,
+	// 	@ConnectedSocket() client: Socket & { userId: string }
+	// ): Promise<void> {
+	// 	const userId: string = client.userId
 
-	@SubscribeMessage('findManyComments')
-	public async findManyComments(
-		@MessageBody() body: FindManyCommentsDto
-	): Promise<void> {
-		const comments: Comment[] = await this.commentsQueryRepo.findMany(body)
+	// 	const comment: Comment = await this.commentsRepo.update(body, userId)
+	// 	this.server.emit('updated-comment', comment)
+	// }
 
-		this.server.emit('found-many-comments', comments)
-	}
+	// @SubscribeMessage('deleteComment')
+	// public async deleteComment(
+	// 	@MessageBody() body: DeleteCommentDto,
+	// 	@ConnectedSocket() client: Socket & { userId: string }
+	// ): Promise<void> {
+	// 	const userId: string = client.userId
 
-	@SubscribeMessage('updateComment')
-	public async update(
-		@MessageBody() body: UpdateCommentDto,
-		@ConnectedSocket() client: Socket & { userId: string }
-	): Promise<void> {
-		const userId: string = client.userId
-
-		const comment: Comment = await this.commentsRepo.update(body, userId)
-		this.server.emit('updated-comment', comment)
-	}
-
-	@SubscribeMessage('deleteComment')
-	public async deleteComment(
-		@MessageBody() body: DeleteCommentDto,
-		@ConnectedSocket() client: Socket & { userId: string }
-	): Promise<void> {
-		const userId: string = client.userId
-
-		const comment: Comment = await this.commentsRepo.delete(body, userId)
-		this.server.emit('deleted-comment', comment)
-	}
+	// 	const comment: Comment = await this.commentsRepo.delete(body, userId)
+	// 	this.server.emit('deleted-comment', comment)
+	// }
 }

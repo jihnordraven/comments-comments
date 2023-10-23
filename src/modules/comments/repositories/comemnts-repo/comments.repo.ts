@@ -17,7 +17,7 @@ export class CommentsRepo {
 	constructor(private readonly prisma: PrismaService) {}
 
 	public async create(data: CreateComment): Promise<Comment> {
-		const comment = await this.prisma.comment
+		const comment: Comment | void = await this.prisma.comment
 			.create({ data })
 			.catch((err: string) => this.logger.error(red(err)))
 		if (!comment) throw new InternalServerErrorException()
@@ -29,28 +29,21 @@ export class CommentsRepo {
 		return this.prisma.comment.findUnique({ where: { id } })
 	}
 
-	public async update(body: UpdateComment, userId: string): Promise<Comment> {
-		const comment: Comment = await this.findById(body.id)
-
-		if (!comment) throw new NotFoundException()
-		if (comment.userId !== userId) throw new ForbiddenException()
-
-		const updatedComment: Comment = await this.prisma.comment.update({
-			where: { ...comment },
-			data: { content: body.content }
+	public async update(id: string, body: UpdateComment): Promise<Comment> {
+		return this.prisma.comment.update({
+			where: { id },
+			data: body
 		})
-		return updatedComment
 	}
 
-	public async delete(body: DeleteComment, userId: string): Promise<Comment> {
-		const comment: Comment = await this.findById(body.id)
+	public async delete(id: string): Promise<Comment> {
+		const comment: Comment | void = await this.prisma.comment
+			.delete({
+				where: { id }
+			})
+			.catch((err: string) => this.logger.error(red(err)))
 
-		if (!comment) throw new NotFoundException()
-		if (comment.userId !== userId) throw new ForbiddenException()
-
-		const deletedComment: Comment = await this.prisma.comment.delete({
-			where: { ...comment }
-		})
-		return deletedComment
+		if (!comment) throw new InternalServerErrorException()
+		return comment
 	}
 }
