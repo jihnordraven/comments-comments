@@ -1,6 +1,6 @@
 export type UpdateCommentInput = {
 	id: string
 	content?: string
-	file?: Express.Multer.File
+	file?: any
 	userId: string
 }
