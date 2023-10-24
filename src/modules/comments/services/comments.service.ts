@@ -19,7 +19,9 @@ export class CommentsService {
 		}
 	}
 
-	public async validateFile(file: Express.Multer.File): Promise<Express.Multer.File> {
+	public async validateFile(
+		file: any /* Express.Multer.File */
+	): Promise<any /*Express.Multer.File */> {
 		const allowedExtensions: string[] = ['.png', '.jpg', '.jpeg']
 
 		const fileExtname: string = extname(file.originalname).toLowerCase()

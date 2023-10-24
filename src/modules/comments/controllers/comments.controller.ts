@@ -39,7 +39,7 @@ export class CommentsController {
 	@UseInterceptors(FileInterceptor('file'))
 	public async create(
 		@Body() dto: CreateCommentDto,
-		@UploadedFile() file: Express.Multer.File, // new ParseFileType({validators: [...]})
+		@UploadedFile() file: any /* Express.Multer.File, */, // new ParseFileType({validators: [...]})
 		@CurrentUser('userId', ParseUUIDPipe)
 		userId: string
 	): Promise<Comment> {
@@ -60,7 +60,7 @@ export class CommentsController {
 		@Param('id') id: string,
 		@Body() dto: UpdateCommentDto,
 		@CurrentUser('userId') userId: string,
-		@UploadedFile() file: Express.Multer.File
+		@UploadedFile() file: any /* Express.Multer.File */
 	): Promise<Comment> {
 		if (file) await this.commentsService.validateFile(file)
 
