@@ -1,0 +1,11 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+    name: comments-app-cluster
+    region: eu-central-1
+
+nodeGroups:
+    - name: ng-1
+      instanceType: t1.micro
+      desiredCapacity: 2
