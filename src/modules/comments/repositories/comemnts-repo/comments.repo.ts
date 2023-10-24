@@ -38,7 +38,8 @@ export class CommentsRepo {
 		return comment
 	}
 
-	public async update(id: string, body: UpdateComment): Promise<Comment> {
+	public async update(id: string, body: Partial<UpdateComment>): Promise<Comment> {
+		// await this.isComment(id)
 		const comment = await this.prisma.comment
 			.update({
 				where: { id },
@@ -53,13 +54,56 @@ export class CommentsRepo {
 		return comment
 	}
 
+	public async updateLikesCount({
+		id,
+		count
+	}: {
+		id: string
+		count: number
+	}): Promise<void> {
+		// await this.isComment(id)
+		const isComment: Comment = await this.findById(id)
+		console.log(isComment)
+		console.log(id, count)
+		const comment = await this.prisma.comment
+			.update({
+				where: { id },
+				data: { likesCount: count }
+			})
+			.catch((err: string) => {
+				this.logger.error(red(err))
+				throw new InternalServerErrorException('Unable to like a comment')
+			})
+		await this.cleanCache(comment)
+	}
+
+	public async updateDislikesCount({
+		id,
+		count
+	}: {
+		id: string
+		count: number
+	}): Promise<void> {
+		// await this.isComment(id)
+		console.log(count)
+		const comment = await this.prisma.comment
+			.update({
+				where: { id },
+				data: { dislikesCount: count }
+			})
+			.catch((err: string) => {
+				this.logger.error(red(err))
+				throw new InternalServerErrorException('Unable to dislike a comment')
+			})
+		await this.cleanCache(comment)
+	}
+
 	public async delete(id: string): Promise<Comment> {
 		const comment: Comment | void = await this.prisma.comment
 			.delete({
 				where: { id }
 			})
 			.catch((err: string) => this.logger.error(red(err)))
-
 		if (!comment) throw new InternalServerErrorException()
 
 		await this.cleanCache(comment)
@@ -71,4 +115,12 @@ export class CommentsRepo {
 		await this.cache.del(`comment-id-${comment.id}`)
 		await this.cache.del('comments')
 	}
+
+	// private async isComment(id: string): Promise<boolean> {
+	// 	const comment: Comment | null = await this.findById(id)
+
+	// 	if (!comment) throw new NotFoundException('Comment not found')
+
+	// 	return true
+	// }
 }

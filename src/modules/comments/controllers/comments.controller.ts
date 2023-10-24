@@ -17,11 +17,11 @@ import { CurrentUser } from '../../../utils/decorators'
 import { CommentsService } from '../services/comments.service'
 import { CommandBus } from '@nestjs/cqrs'
 import { Comment } from '@prisma/client'
-import { CC } from '../commands'
 import { CommentsGateway } from '../gateways/comments.gateway'
 import { JwtGuard } from '../../../guards-handlers/guards'
 import { COMMENTS_SWAGGER } from '../../../utils/swagger'
 import { ApiTags } from '@nestjs/swagger'
+import { CC } from '../commands'
 
 @ApiTags('Comments Controller')
 @UseGuards(JwtGuard)

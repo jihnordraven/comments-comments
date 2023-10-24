@@ -19,6 +19,9 @@ model Comment {
   likesCount Int    @default(0)
   Likes      Like[]
 
+  dislikesCount Int       @default(0)
+  Dislikes      Dislike[]
+
   Parent   Comment?  @relation("ChildComments", fields: [parentId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   Children Comment[] @relation("ChildComments")
 
@@ -31,16 +34,18 @@ model Like {
   commentId String
   createdAt DateTime @default(now())
 
-  comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
 
   @@map("likes")
 }
 
-// model View {
-//   id String @id @unique @default(uuid())
-//   userId String
-//   commentId String
-//   createdAt DateTime @default(now())
+model Dislike {
+  id        String   @id @unique @default(uuid())
+  userId    String
+  commentId String
+  createdAt DateTime @default(now())
 
-//   @@map("views")
-// }
+  comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@map("dislikes")
+}

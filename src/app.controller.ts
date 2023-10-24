@@ -1,6 +1,6 @@
 import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { HelloPageTemplate } from 'static/templates'
+import { HelloPageTemplate } from '../static/templates'
 import { APP_SWAGGER } from './utils/swagger'
 import { ApiTags } from '@nestjs/swagger'
 

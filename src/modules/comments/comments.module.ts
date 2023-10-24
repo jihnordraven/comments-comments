@@ -1,33 +1,17 @@
 import { Module } from '@nestjs/common'
 import { CommentsService } from './services/comments.service'
 import { CommentsGateway } from './gateways/comments.gateway'
-import { COMMENTS_REPOS } from './repositories'
+import { COMMENTS_REPOS, CommentsRepo } from './repositories'
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import { ConfigModule, ConfigService } from '@nestjs/config'
-import { CH } from './commands'
+import { CCH } from './commands'
 import { CqrsModule } from '@nestjs/cqrs'
 import { CommentsController } from './controllers/comments.controller'
 import { FILES_SERVICE } from '../../utils/constants'
-import { CacheModule } from '@nestjs/cache-manager'
-import { redisStore } from 'cache-manager-redis-yet'
 
 @Module({
 	imports: [
 		CqrsModule,
-		CacheModule.registerAsync({
-			imports: [ConfigModule],
-			useFactory: async (config: ConfigService) => ({
-				store: await redisStore({
-					database: config.getOrThrow<number>('REDIS_DB'),
-					password: config.getOrThrow<string>('REDIS_PASS'),
-					socket: {
-						host: config.getOrThrow<string>('REDIS_HOST'),
-						port: config.getOrThrow<number>('REDIS_PORT')
-					}
-				})
-			}),
-			inject: [ConfigService]
-		}),
 		ClientsModule.registerAsync([
 			{
 				name: FILES_SERVICE,
@@ -44,6 +28,7 @@ import { redisStore } from 'cache-manager-redis-yet'
 		])
 	],
 	controllers: [CommentsController],
-	providers: [CommentsGateway, CommentsService, ...COMMENTS_REPOS, ...CH]
+	providers: [CommentsGateway, CommentsService, ...COMMENTS_REPOS, ...CCH],
+	exports: [CommentsRepo, CommentsGateway]
 })
 export class CommentsModule {}

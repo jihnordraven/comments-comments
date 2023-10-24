@@ -7,4 +7,4 @@ import { UpdateCommentHandler } from './update/update-comment.handler'
 
 export const CC = { CreateCommentCommand, UpdateCommentCommand, DeleteCommentCommand }
 
-export const CH = [CreateCommentHandler, UpdateCommentHandler, DeleteCommentHandler]
+export const CCH = [CreateCommentHandler, UpdateCommentHandler, DeleteCommentHandler]
