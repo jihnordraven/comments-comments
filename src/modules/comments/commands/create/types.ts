@@ -1,6 +1,6 @@
 export type CreateCommentInput = {
 	content: string
 	parentId?: string
-	file?: Express.Multer.File
+	file?: any
 	userId: string
 }
