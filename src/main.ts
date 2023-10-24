@@ -5,6 +5,9 @@ import { ConfigService } from '@nestjs/config'
 import { Logger, RequestMethod, ValidationPipe } from '@nestjs/common'
 import { blue } from 'colorette'
 import { swaggerSetup } from './utils/swagger'
+import * as dotenv from 'dotenv'
+
+dotenv.config()
 
 const logger: Logger = new Logger('bootstrap')
 
