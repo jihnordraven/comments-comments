@@ -44,10 +44,6 @@ export class CommentsGateway
 		this.logger.log(bgYellow(`client: ${client.id} has disconnected`))
 	}
 
-	public commentCreated(comment: Comment): void {
-		this.server.emit('comment-created', comment)
-	}
-
 	@SubscribeMessage('findManyComments')
 	public async findManyComments(
 		@MessageBody() body: FindManyCommentsDto
@@ -57,12 +53,20 @@ export class CommentsGateway
 		this.server.emit('found-many-comments', comments)
 	}
 
+	public commentCreated(comment: Comment): void {
+		this.server.emit('comment-created', comment)
+	}
+
 	public commentUpdated(comment: Comment): void {
 		this.server.emit('comment-updated', comment)
 	}
 
 	public commentDeleted(comment: Comment): void {
 		this.server.emit('comment-deleted', comment)
+	}
+
+	public commentLiked(comment: Comment): void {
+		this.server.emit('comment-liked', comment)
 	}
 
 	// @SubscribeMessage('createComment')

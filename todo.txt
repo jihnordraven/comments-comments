@@ -1,0 +1,2 @@
+1. flex likes/dislikes
+2. deploy to k8s
