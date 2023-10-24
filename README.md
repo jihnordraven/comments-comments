@@ -97,15 +97,15 @@ Now the application is listening Socket.io gateway on http://localhost:9200/comm
 Build docker image
 
 ```bash
-$ docker build -t comments-comments:latest .
+$ docker build -t comments-comment-containers:latest .
 
-$ docker start comments-comments:latest
+$ docker run -d --name comments-comments-container comments-comments:latest
 ```
 
 Check application logs
 
 ```bash
-$ docker exec -it comments-comments:latest sh
+$ docker exec -it comments-comments-container:latest sh
 ```
 
 Now the application is listening Socket.io gateway on http://localhost:9200/comments
