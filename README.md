@@ -30,6 +30,8 @@ comments nest.js microservice | handle websocket gateway (create/get/update/dele
 
 1. Needs to have docker desktop installed on your machine
 
+2. Create a new .env file -> Copy .local.env and paste it into .env
+
 ## Launch rabbitmq & postgres & redis with docker
 
 ```bash
@@ -45,11 +47,13 @@ $ docker logs rabbitmq
 ```bash
 # run postgres container on port:5432 (connect: psql postgresql://admin:admin@localhost:5432)
 $ docker run -d --name postgres -p 5432:5432 -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin postgres
+
 $ docker logs postgresql
 ```
 
 ```bash
 $ docker run -d -p 6379:6379 --name redis redis --requirepass admin
+
 $ docker logs redis
 ```
 
